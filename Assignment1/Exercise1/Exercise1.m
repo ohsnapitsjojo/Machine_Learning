@@ -39,11 +39,13 @@ for i=1:6
     end
 end
 
+
 [M, I] =min(position_error);
 
 par{1} = a{I}(:,1);
 par{2} = a{I}(:,2);
 par{3} = a{I}(:,3);
+
 
 end
 
