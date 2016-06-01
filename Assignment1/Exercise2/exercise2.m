@@ -2,7 +2,7 @@
 clear all;
 tic;
 
-d = 500;
+d = 15;
 
 %% Load data
 
@@ -14,53 +14,59 @@ test_labels = loadMNISTLabels('t10k-labels.idx1-ubyte');
 %% PCA
 
 means = mean2(images);                       % Compute the mean
-tmp_images = images - means;% Make the data zero-mean
+tmp_images = images - means;                % Make the data zero-mean
 S = cov(tmp_images.');                      % Compute Cov Matrix
 [V, D] = eig(S);                            % Eigenvectors and Eigenvalues
     
 D = diag(D);     
-[B, I] = sort(D);
-I = fliplr(I);
+[B, I] = sort(D, 'descend');
+
 basis = V(:,I(1:d));                            % Chose the strongest Eigenvectors
 
 y = basis.'*images;                             % Project the data on these basis
 
 %% Computation of the mean and covaraicne of each digit class seperately
 
-class = cell(10,1);
-mean_class = cell(10,1);
-cov_class = cell(10,1);
-proj_class = cell(10,1);
-l_class = cell(10,1);
 
-mean_vector = zeros(1,9);
+
+
+class_y = cell(10,1);
+mean_class = cell(10,1);
+mean_class_y = cell(10,1);
+cov_class_y = cell(10,1);
+
 tmp_sum = mean(images);
-cov_vector = zeros(1,9);
+tmp_sum_y = mean(y);
 
 for i=0:9
 
     
-    tmp_ind = find(test_labels == i);
+    tmp_ind = find(labels == i);
     tmp_mean = tmp_sum(:,tmp_ind);
+    tmp_mean_y = tmp_sum_y(:,tmp_ind);
     mean_class{i+1} = mean(tmp_mean);
-    class{i+1} = test_images(:,tmp_ind) - ones(size(test_images,1),1)*tmp_mean;
-    cov_class{i+1} = cov(class{i+1}'); 
-    proj_class{i+1} = basis.'*class{i+1};
+    mean_class_y{i+1} = mean(tmp_mean_y);
+    class_y{i+1} = y(:,tmp_ind);
+    cov_class_y{i+1} = cov(class_y{i+1}');
+end
+
+      
+        
+
+for i=1:10
+    test_proj = basis.'*(test_images-mean_class{i});
+    l(:,i) = mvnpdf(test_proj', mean_class_y{i}, cov_class_y{i});
     
 end
 
+[max_l , matched_class] = max(l,[],2);
 
+matched_class = matched_class - 1;
 
+matched_ratio = sum(matched_class==test_labels)/length(test_labels);
 
 toc;
 
-% cov_vector = cov(y(:,1));
-% 
-% for i=1:size(y,1)                      % Substract mean vector from input data
-%     tmp_images(i,:) = tmp_images(i,:) - mean_vector;
-% end
-% 
-% y_neu = basis.'*tmp_images;                      % Project Data on already learned basis
 
 
 
