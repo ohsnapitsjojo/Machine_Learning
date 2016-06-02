@@ -1,4 +1,15 @@
-function [ error] = bayes_classifier( images, labels, test_images, test_labels, d)
+%% Load parameter
+clear all;
+tic;
+
+
+%% Load data
+
+images = loadMNISTImages('train-images.idx3-ubyte'); 
+labels = loadMNISTLabels('train-labels.idx1-ubyte');
+test_images = loadMNISTImages('t10k-images.idx3-ubyte');
+test_labels = loadMNISTLabels('t10k-labels.idx1-ubyte');
+
 %% PCA
 
 means = mean2(images);                       % Compute the mean
@@ -24,6 +35,7 @@ mean_class_y = cell(10,1);
 cov_class_y = cell(10,1);
 
 tmp_sum = mean(images);
+
 if size(y,1)>1
     tmp_sum_y = mean(y);
 else
@@ -57,5 +69,8 @@ matched_class = matched_class - 1;
 
 error = sum(matched_class~=test_labels)/length(test_labels);
 
-end
+toc;
+
+
+
 
