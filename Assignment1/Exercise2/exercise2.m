@@ -16,7 +16,7 @@ errors = zeros(d,1);
     
 x_axis = [1:1:d];
 
-[optimal_error, optimal_d] = min(errors)
+[optimal_error, optimal_d] = min(errors);
 
 figure;
 scatter(x_axis, errors);

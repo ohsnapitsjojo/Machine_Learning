@@ -6,10 +6,10 @@ input = [tmp(:,1,1), tmp(:,1,2), tmp(:,1,3)];
 means = init_cluster_l;
 dod = 420;
 d = 420;
-euk_distance = zeros(size(input, 1), k);
 class = cell(7,1);
 k = 7;
 threshold = 10^-6;
+euk_distance = zeros(size(input, 1), k);
 
 %% k means
 

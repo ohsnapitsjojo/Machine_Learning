@@ -5,14 +5,12 @@ figure();
 
 v = [0.08, 0.05, 0.02];
 
-for j=1:size(gesture, 2)
     tmp_k = 1;
     d = cell(k,1);
     y = cell(k,1);
     cluster = cell(k,1);
-    tmp = gesture(:,j,:);
-    input = [tmp(:,1,1), tmp(:,1,2), tmp(:,1,3)];
-    
+
+    input = reshape(gesture,600,3);    
     cluster{1} = input;
     
     while tmp_k ~= k
@@ -60,5 +58,4 @@ for j=1:size(gesture, 2)
 end
 
 
-end
 

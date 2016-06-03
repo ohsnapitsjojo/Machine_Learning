@@ -1,7 +1,6 @@
 function [ par ] = Exercise1( k )
 %EXERCISE1 Summary of this function goes here
 %   Detailed explanation goes here
-
 load('Data.mat');
 
 %% Resizing input and output data into k subsamples
@@ -46,6 +45,7 @@ par{1} = a{I}(:,1);
 par{2} = a{I}(:,2);
 par{3} = a{I}(:,3);
 
+position_error
 
 end
 
